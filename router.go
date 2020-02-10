@@ -8,6 +8,10 @@ import (
 // NewRouter returns a new router
 func NewRouter() *gin.Engine {
 	r := gin.Default()
+	r.Use(gin.Logger())
+
+	// Recovery middleware recovers from any panics and writes a 500 if there was one.
+	r.Use(gin.Recovery())
 	r.POST("/:service/send", func(c *gin.Context) {
 		service := c.Param("service")
 		var sr SendRequest
