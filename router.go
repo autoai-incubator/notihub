@@ -22,5 +22,15 @@ func NewRouter() *gin.Engine {
 			b.Send(&user, sr.Msg)
 		}
 	})
+	r.POST("/:service/send/:recipient", func(c *gin.Context) {
+		service := c.Param("service")
+		var sr SendRequest
+		c.BindJSON(&sr)
+		if service == "telegram" {
+			b := components.NewTelegramBot()
+			user := components.GetUser(c.Param("recipient"))
+			b.Send(&user, sr.Msg)
+		}
+	})
 	return r
 }
